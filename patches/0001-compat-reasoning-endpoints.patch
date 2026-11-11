@@ -1,1 +1,111 @@
-PLACEHOLDER_PATCH
+From 602189c896420624b8ebed97339d3eeb3ae1d07e Mon Sep 17 00:00:00 2001
+From: Repro Student <student@example.com>
+Date: Wed, 11 Nov 2026 23:59:01 +0800
+Subject: [PATCH] compat: OpenAI-compatible reasoning-endpoint fixes (token
+ budgets, sampling param override, tool_choice for voting)
+
+- openai_chat.py: allow endpoint-constrained sampling params via
+  LITS_OPENAI_FORCE_TEMPERATURE / LITS_OPENAI_FORCE_TOP_P (Kimi gateway
+  only accepts temperature=1, top_p=0.95)
+- base.py: LITS_BINARY_MAX_NEW_TOKENS raises the binary-answer token budget
+  so reasoning models leave a parsable answer in the content channel
+- reward/generative.py: LITS_PRM_SAMPLE_MAX_NEW_TOKENS overrides the 500-token
+  PRM sampling budget (reasoning channel consumed it entirely)
+- eval/answer_voting.py: pin tool_choice=required for group_answers voting
+  (reasoning endpoints answer in free text under tool_choice=auto)
+---
+ lits/components/reward/generative.py | 6 +++++-
+ lits/eval/answer_voting.py           | 5 +++++
+ lits/lm/base.py                      | 8 ++++++--
+ lits/lm/openai_chat.py               | 23 +++++++++++++++++++++++
+ 4 files changed, 39 insertions(+), 3 deletions(-)
+
+diff --git a/lits/components/reward/generative.py b/lits/components/reward/generative.py
+index 92fe210..bf1befe 100644
+--- a/lits/components/reward/generative.py
++++ b/lits/components/reward/generative.py
+@@ -161,7 +161,11 @@ class GenerativePRM(RewardModel):
+                 log_event(logger, "SAMPLE", f"{i+1}/{n_sample}", level="debug")
+                 reasoning, full_output = "", ""
+                 try:
+-                    output = call_model_fn(msg, role_prefix, max_new_tokens=500, skip_special_tokens= True, enable_thinking=enable_thinking).text
++                    # Env compatibility fix (reproducibility work): 500 tokens can be
++                    # fully consumed by a reasoning model's reasoning channel; allow a
++                    # larger budget via LITS_PRM_SAMPLE_MAX_NEW_TOKENS when needed.
++                    import os as _os
++                    output = call_model_fn(msg, role_prefix, max_new_tokens=int(_os.getenv("LITS_PRM_SAMPLE_MAX_NEW_TOKENS", "500")), skip_special_tokens= True, enable_thinking=enable_thinking).text
+                     full_output = output
+                     if enable_thinking:
+                         result_dict = parse_reasoning_and_label(output) # to make sure the output is parsed correctly
+diff --git a/lits/eval/answer_voting.py b/lits/eval/answer_voting.py
+index cc01642..d2c6b61 100644
+--- a/lits/eval/answer_voting.py
++++ b/lits/eval/answer_voting.py
+@@ -144,6 +144,11 @@ def vote_answers(
+     for attempt in range(2):
+         output = model(
+             prompt, tools=[tool], role="evaluator_voting", parallel_tool_calls=False,
++            # Env compatibility fix (reproducibility work): some OpenAI-compatible
++            # reasoning endpoints answer in free text under tool_choice="auto" even
++            # when the prompt demands a tool call. Voting semantically requires
++            # exactly one call, so pin tool_choice="required" here.
++            tool_choice="required",
+             temperature=1e-6, max_new_tokens=max_new_tokens,
+         )
+         logging.getLogger(__name__).debug("Answer voting output: %r", output)
+diff --git a/lits/lm/base.py b/lits/lm/base.py
+index ef033c0..026fb2a 100644
+--- a/lits/lm/base.py
++++ b/lits/lm/base.py
+@@ -627,9 +627,13 @@ class LanguageModel:
+             answer_samples[unknown] = unknown if unknown is not None else contrast
+         orig_verbose = self.verbose
+         
+-        # For binary output, we only need a few tokens
++        # For binary output, we only need a few tokens.
++        # Env compatibility fix (reproducibility work): reasoning models consumed
++        # the 10-token budget inside the reasoning channel, leaving an empty
++        # answer. LITS_BINARY_MAX_NEW_TOKENS raises the budget for such backends.
++        import os as _os
+         if max_new_tokens is None:
+-            max_new_tokens = 10
++            max_new_tokens = int(_os.getenv("LITS_BINARY_MAX_NEW_TOKENS", "10"))
+         max_length, max_new_tokens = self._get_gen_legnth(max_new_tokens, max_length)
+ 
+         # Build valid tokens list
+diff --git a/lits/lm/openai_chat.py b/lits/lm/openai_chat.py
+index 54e3347..f22bb55 100644
+--- a/lits/lm/openai_chat.py
++++ b/lits/lm/openai_chat.py
+@@ -117,6 +117,29 @@ class OpenAIChatModel(LanguageModel):
+         unsupported_kwargs = set(kwargs.keys()) - {"frequency_penalty", "presence_penalty", "n"}
+         if unsupported_kwargs:
+             logger.debug(f"Ignoring kwargs not applicable to OpenAI chat models: {unsupported_kwargs}")
++        # Env compatibility fix (reproducibility work): some OpenAI-compatible
++        # endpoints (e.g. the Kimi coding gateway) only accept temperature=1.
++        # Set LITS_OPENAI_FORCE_TEMPERATURE to override the sampling temperature
++        # for every request through this client; the override is logged once.
++        forced_temperature = os.getenv("LITS_OPENAI_FORCE_TEMPERATURE")
++        if forced_temperature is not None:
++            if not getattr(self, "_forced_temperature_warned", False):
++                logger.warning(
++                    "LITS_OPENAI_FORCE_TEMPERATURE=%s is set: overriding request temperature (endpoint constraint).",
++                    forced_temperature,
++                )
++                self._forced_temperature_warned = True
++            temperature = float(forced_temperature)
++        forced_top_p = os.getenv("LITS_OPENAI_FORCE_TOP_P")
++        if forced_top_p is not None:
++            if not getattr(self, "_forced_top_p_warned", False):
++                logger.warning(
++                    "LITS_OPENAI_FORCE_TOP_P=%s is set: overriding request top_p (endpoint constraint).",
++                    forced_top_p,
++                )
++                self._forced_top_p_warned = True
++            top_p = float(forced_top_p)
++
+         if new_line_stop:
+             stop = [stop] if isinstance(stop, str) else list(stop or [])
+             if "\n" not in stop:
+-- 
+2.50.1 (Apple Git-155)
