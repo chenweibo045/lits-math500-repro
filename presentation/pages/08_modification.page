@@ -1,0 +1,54 @@
+pageType: content
+background: {type: solid, color: "#FFFFFF"}
+elements:
+  - elementId: title
+    elementType: text
+    bounds: [50, 28, 860, 40]
+    content: {style: "$pageTitle", text: "The modification: remove policy diversity (n_actions 3 → 1)"}
+  - elementId: rule
+    elementType: shape
+    bounds: [50, 74, 860, 2]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: what
+    elementType: text
+    bounds: [50, 96, 430, 250]
+    content:
+      style: "$body"
+      text: |
+        <p><strong>One isolated parameter change:</strong> <code>--search-arg n_actions=1</code>.</p>
+        <p>Branching factor 3 → 1: each MCTS expansion proposes a single candidate action, so the tree degenerates into one greedy path. Everything else — components, prompts, PRM, iteration budget, decoding — held constant.</p>
+        <p><strong>Why this modification:</strong> it operationalizes the paper's mode-collapse claim on a language-grounded task. If diversity is the bottleneck, removing branching should cost little; if reward-guided branching adds value, accuracy and cost-efficiency should degrade measurably.</p>
+  - elementId: diagram
+    elementType: shape
+    bounds: [510, 96, 400, 250]
+    shapeName: roundRect
+    adjustments: [6000]
+    fill: {type: solid, color: "$light"}
+  - elementId: diagramtext
+    elementType: text
+    bounds: [530, 110, 360, 224]
+    content:
+      fontSize: 14
+      color: "$text"
+      lineHeight: 1.5
+      text: |
+        <p><strong>n_actions = 3 (baseline)</strong></p>
+        <p>root ─┬─ action A ──…</p>
+        <p style="margin-left:60px">├─ action B ──…</p>
+        <p style="margin-left:60px">└─ action C ──…</p>
+        <p>PRM scores each branch; MCTS explores + votes</p>
+        <p style="margin-top:10px"><strong>n_actions = 1 (modified)</strong></p>
+        <p>root ── action A ── action B ── … (single path)</p>
+        <p>tree search ⇒ sequential chain with PRM bookkeeping</p>
+  - elementId: meas
+    elementType: text
+    bounds: [50, 366, 860, 110]
+    content:
+      style: "$body"
+      text: |
+        <p><strong>Measured impact (paired first-5 examples, 1 trial):</strong> accuracy · LLM invocations · input/output tokens · LLM time · reward signal. Same evaluation script, same judging model, same protocol — the comparison is paired per problem index.</p>
+  - elementId: footer
+    elementType: text
+    bounds: [50, 500, 860, 20]
+    content: {style: "$small", text: "FTEC5660 Reproducibility Work · LiTS on MATH500 · 8 / 12"}

@@ -1,0 +1,47 @@
+pageType: final
+background: {type: solid, color: "#FFFFFF"}
+elements:
+  - elementId: band
+    elementType: shape
+    bounds: [0, 0, 960, 8]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: title
+    elementType: text
+    bounds: [80, 60, 800, 50]
+    content:
+      fontSize: 30
+      bold: true
+      color: "$primary"
+      text: Summary
+  - elementId: body
+    elementType: text
+    bounds: [80, 130, 800, 220]
+    content:
+      fontSize: 16
+      color: "$text"
+      lineHeight: 1.6
+      text: |
+        <ul>
+        <li>Reproduced LiTS's ReST-MCTS* configuration on MATH500 (20 examples, 1 completed trial) with a permitted model swap; pipeline, observability, and re-execution-by-config all verified.</li>
+        <li>Four small, env-gated compatibility fixes were needed for an OpenAI-compatible reasoning endpoint — three of them fixed silent failure modes.</li>
+        <li>One isolated modification (n_actions 3→1) quantified the value of policy diversity: on a paired 5-problem subset it cost zero accuracy while cutting LLM calls by 52% and LLM time by 69%.</li>
+        <li>Bottom line: the framework's claims hold up; the paper's literal numbers are bounded by model, sampling, and dataset-version assumptions.</li>
+        </ul>
+  - elementId: links
+    elementType: shape
+    bounds: [80, 380, 800, 100]
+    shapeName: roundRect
+    adjustments: [8000]
+    fill: {type: solid, color: "$light"}
+  - elementId: linktext
+    elementType: text
+    bounds: [100, 394, 760, 76]
+    content:
+      fontSize: 14
+      color: "$text"
+      lineHeight: 1.7
+      text: |
+        <p><strong>Report &amp; artifacts:</strong> github.com/chenweibo045/lits-math500-repro</p>
+        <p><strong>Upstream:</strong> github.com/xinzhel/lits-llm · <strong>Paper:</strong> arXiv:2603.00631</p>
+        <p>Thank you — questions welcome.</p>

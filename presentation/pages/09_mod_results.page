@@ -1,0 +1,53 @@
+pageType: content
+background: {type: solid, color: "#FFFFFF"}
+elements:
+  - elementId: title
+    elementType: text
+    bounds: [50, 28, 860, 40]
+    content: {style: "$pageTitle", text: "Results after modification — accuracy vs. cost"}
+  - elementId: rule
+    elementType: shape
+    bounds: [50, 74, 860, 2]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: table
+    elementType: table
+    bounds: [50, 96, 860, 130]
+    columnWidths: [0.20, 0.16, 0.16, 0.16, 0.16, 0.16]
+    rowHeights: [0.25, 0.25, 0.25, 0.25]
+    style: "$default"
+    rows:
+      - [{text: "Arm (1 trial, paired 5 ex.)"}, {text: "Accuracy"}, {text: "LLM calls"}, {text: "In tok"}, {text: "Out tok"}, {text: "LLM time (s)"}]
+      - [{text: "baseline (n=3)", align: [left, middle]}, {text: "4/5 = 80%"}, {text: "~198 (39.6/ex)"}, {text: "~84.0k (16.8k/ex)"}, {text: "~45.2k (9.0k/ex)"}, {text: "~1,372 (274/ex)"}]
+      - [{text: "no_branch (n=1)", align: [left, middle]}, {text: "4/5 = 80%"}, {text: "95 (19.0/ex)"}, {text: "34.5k (6.9k/ex)"}, {text: "16.8k (3.4k/ex)"}, {text: "423 (85/ex)"}]
+      - [{text: "Δ (modified − baseline)", bold: true, align: [left, middle]}, {text: "0", bold: true}, {text: "−52%"}, {text: "−59%"}, {text: "−63%"}, {text: "−69%"}]
+  - elementId: chart
+    elementType: chart
+    bounds: [50, 246, 420, 210]
+    title: {text: "Accuracy on paired 5 examples", fontSize: 13}
+    data:
+      cols: ["arm", "acc"]
+      rows:
+        - ["baseline (n=3)", 0.8]
+        - ["no_branch (n=1)", 0.8]
+    series:
+      - type: bar
+        encode: {x: "arm", y: "acc"}
+        name: "Accuracy"
+        fill: "#C00000"
+    legend: false
+    yAxis: {min: 0, max: 1}
+    dataLabels: {show: true}
+  - elementId: readout
+    elementType: text
+    bounds: [500, 246, 410, 210]
+    content:
+      style: "$body"
+      text: |
+        <p><strong>Reading:</strong> zero accuracy loss while cutting LLM calls by 52%, tokens by ~59–63%, and LLM time by 69% — consistent with the paper's mode-collapse finding: with a strong policy, extra branches duplicate effort. (Baseline arm scaled from the 20-example run, marked ~.)</p>
+        <p>Per-problem pairing: both arms solved the same 4 problems and both failed on example #3 — genuinely hard for this model.</p>
+        <p>Cost-efficiency (correct answers per 1k output tokens): 0.089 → 0.238 (≈2.7×).</p>
+  - elementId: footer
+    elementType: text
+    bounds: [50, 500, 860, 20]
+    content: {style: "$small", text: "FTEC5660 Reproducibility Work · LiTS on MATH500 · 9 / 12"}

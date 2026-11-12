@@ -1,0 +1,53 @@
+pageType: content
+background: {type: solid, color: "#FFFFFF"}
+elements:
+  - elementId: title
+    elementType: text
+    bounds: [50, 28, 860, 40]
+    content: {style: "$pageTitle", text: "Baseline reproduction: MCTS, n_actions=3 (paper config)"}
+  - elementId: rule
+    elementType: shape
+    bounds: [50, 74, 860, 2]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: table
+    elementType: table
+    bounds: [50, 96, 860, 170]
+    columnWidths: [0.22, 0.16, 0.16, 0.16, 0.15, 0.15]
+    rowHeights: [0.2, 0.2, 0.2, 0.2, 0.2]
+    style: "$default"
+    rows:
+      - [{text: "Trial"}, {text: "Accuracy"}, {text: "LLM calls"}, {text: "In tok"}, {text: "Out tok"}, {text: "LLM time (min)"}]
+      - [{text: "1 (completed)"}, {text: "80%  (16/20)"}, {text: "792"}, {text: "336k"}, {text: "181k"}, {text: "91.5"}]
+      - [{text: "2–3"}, {text: "—"}, {text: "—"}, {text: "—"}, {text: "—"}, {text: "—"}]
+      - [{text: "Mean ± std", bold: true}, {text: "n/a — single trial", bold: true}, {text: ""}, {text: ""}, {text: ""}, {text: ""}]
+  - elementId: chart
+    elementType: chart
+    bounds: [50, 290, 420, 190]
+    title: {text: "Accuracy: ours vs. paper reference", fontSize: 13}
+    data:
+      cols: ["arm", "acc"]
+      rows:
+        - ["Ours (K2, 20 ex.)", 0.8]
+        - ["Paper (Llama3-8B, 100 ex.)", 0.37]
+    series:
+      - type: bar
+        encode: {x: "arm", y: "acc"}
+        name: "Accuracy"
+        fill: "#1F3864"
+    legend: false
+    yAxis: {min: 0, max: 1}
+    dataLabels: {show: true}
+  - elementId: readout
+    elementType: text
+    bounds: [500, 290, 410, 190]
+    content:
+      style: "$body"
+      text: |
+        <p><strong>Reading:</strong> the literal number is not comparable across models and subset sizes — what reproduces is the pipeline behavior: search terminates productively, PRM signal is live, costs are accounted per component.</p>
+        <p>Paper reference (different model, 100 ex.): ReST-MCTS* 37%, ToT-BFS 39%, CoT 17%.</p>
+        <p>Costs: 792 LLM calls (39.6/ex), 336k in / 181k out tokens, 91.5 min LLM time. Terminal-node fast rewards span 0.6–1.0 (mean 0.93).</p>
+  - elementId: footer
+    elementType: text
+    bounds: [50, 500, 860, 20]
+    content: {style: "$small", text: "FTEC5660 Reproducibility Work · LiTS on MATH500 · 7 / 12"}

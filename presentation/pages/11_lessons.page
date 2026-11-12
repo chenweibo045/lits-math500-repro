@@ -1,0 +1,41 @@
+pageType: content
+background: {type: solid, color: "#FFFFFF"}
+elements:
+  - elementId: title
+    elementType: text
+    bounds: [50, 28, 860, 40]
+    content: {style: "$pageTitle", text: "Lessons and recommendations to future users"}
+  - elementId: rule
+    elementType: shape
+    bounds: [50, 74, 860, 2]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: lessons
+    elementType: text
+    bounds: [50, 96, 860, 240]
+    content:
+      style: "$body"
+      text: |
+        <ol>
+        <li><strong>Reasoning models break silent contracts.</strong> Token budgets sized for direct-answer models (10 / 500 tokens) are consumed inside the reasoning channel, producing empty answers and zero rewards <em>without any error</em>. Budget every call for reasoning overhead, or stream and parse explicitly.</li>
+        <li><strong>Endpoint constraints are undocumented variables.</strong> Locked temperature/top_p changed the exploration behavior the paper assumes (0.7–0.8). Record decoding params as first-class metadata.</li>
+        <li><strong>Tool-calling discipline varies by endpoint.</strong> Under tool_choice=auto a reasoning endpoint answered in free text; pinning tool_choice=required fixed voting. Verify tool-call conformance explicitly.</li>
+        <li><strong>Evaluating from saved artifacts is the right design.</strong> lits-eval re-scores terminal nodes without re-running search — cheap iteration, and it is how we caught and fixed the voting bug.</li>
+        </ol>
+  - elementId: recbox
+    elementType: shape
+    bounds: [50, 356, 860, 110]
+    shapeName: roundRect
+    adjustments: [8000]
+    fill: {type: solid, color: "$light"}
+  - elementId: rec
+    elementType: text
+    bounds: [70, 368, 820, 88]
+    content:
+      style: "$body"
+      text: |
+        <p><strong>Recommendations:</strong> (1) run the no-API-key dry-run first, then a 1–2 problem smoke test before any subset; (2) keep the four env-gated fixes — they are inert otherwise; (3) report per-trial mean ± std, not single runs — with only one completed trial here, spread was unmeasurable — report per-example outcomes instead (baseline failures: #3, 8, 10, 13); (4) treat paper subset descriptions as approximations and pin the exact loader/version in your own report.</p>
+  - elementId: footer
+    elementType: text
+    bounds: [50, 500, 860, 20]
+    content: {style: "$small", text: "FTEC5660 Reproducibility Work · LiTS on MATH500 · 11 / 12"}

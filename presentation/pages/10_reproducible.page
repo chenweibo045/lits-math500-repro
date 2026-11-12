@@ -1,0 +1,59 @@
+pageType: content
+background: {type: solid, color: "#FFFFFF"}
+elements:
+  - elementId: title
+    elementType: text
+    bounds: [50, 28, 860, 40]
+    content: {style: "$pageTitle", text: "What is reproducible — and what is not"}
+  - elementId: rule
+    elementType: shape
+    bounds: [50, 74, 860, 2]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: yes
+    elementType: shape
+    bounds: [50, 96, 420, 300]
+    shapeName: roundRect
+    adjustments: [6000]
+    fill: {type: solid, color: "#EDF6EE"}
+    border: {style: solid, width: 1, color: "$good"}
+  - elementId: yestext
+    elementType: text
+    bounds: [70, 112, 380, 270]
+    content:
+      fontSize: 14
+      color: "$text"
+      lineHeight: 1.5
+      text: |
+        <p><span style="color:$good;"><strong>✓ Reproduces</strong></span></p>
+        <ul>
+        <li>The full pipeline runs end-to-end on an OpenAI-compatible endpoint after 4 small env-gated fixes</li>
+        <li>Qualitative claim C1 pattern: confirmed — search ran to completion on all 20 problems, PRM rewards spanned 0.6–1.0 (mean 0.93), and answers emerged via multi-step decomposition</li>
+        <li>Observability claims: per-component token/time accounting works as documented and matches our own measurement</li>
+        <li>Claim that config.json alone suffices to re-execute a run — verified flag-for-flag</li>
+        </ul>
+  - elementId: no
+    elementType: shape
+    bounds: [490, 96, 420, 300]
+    shapeName: roundRect
+    adjustments: [6000]
+    fill: {type: solid, color: "#FBEFEF"}
+    border: {style: solid, width: 1, color: "$accent"}
+  - elementId: notext
+    elementType: text
+    bounds: [510, 112, 380, 270]
+    content:
+      fontSize: 14
+      color: "$text"
+      lineHeight: 1.5
+      text: |
+        <p><span style="color:$accent;"><strong>✗ Does not reproduce as-is</strong></span></p>
+        <ul>
+        <li>The literal 37% — model, sampling params, and dataset boundary all differ; number-matching was never the goal</li>
+        <li>The logit-based reward fallback — chat endpoints expose no logprobs; silently zero rewards without the fix (silent failure mode worth reporting upstream)</li>
+        <li>“First 100 examples” — the registered loader serves 316 rows; subset semantics drifted between paper and code</li>
+        </ul>
+  - elementId: footer
+    elementType: text
+    bounds: [50, 500, 860, 20]
+    content: {style: "$small", text: "FTEC5660 Reproducibility Work · LiTS on MATH500 · 10 / 12"}
