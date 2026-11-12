@@ -30,7 +30,7 @@ index f22bb55..ebb9298 100644
          tracing.instrument_openai(self.client)
          self.model_name = model_name
          self.sys_prompt = sys_prompt
-diff --git a/scripts/run_experiment.sh b/lits/scripts/run_experiment.sh
+diff --git a/scripts/run_experiment.sh b/scripts/run_experiment.sh
 new file mode 100644
 index 0000000..f74fe3d
 --- /dev/null
