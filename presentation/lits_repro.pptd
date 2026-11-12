@@ -1,0 +1,50 @@
+version: v2
+title: "Reproducing LiTS (MCTS Tree Search) on MATH500 — FTEC5660 Reproducibility Work"
+size: [960, 540]
+theme:
+  colors:
+    primary: "#1F3864"
+    accent: "#C00000"
+    text: "#1A1A1A"
+    muted: "#5A5A5A"
+    light: "#EEF2F9"
+    good: "#2E7D32"
+    warn: "#B26A00"
+  textStyles:
+    pageTitle:
+      fontSize: 26
+      color: "$primary"
+      bold: true
+    body:
+      fontSize: 15
+      color: "$text"
+      lineHeight: 1.45
+    small:
+      fontSize: 12
+      color: "$muted"
+      lineHeight: 1.35
+  tableStyles:
+    default:
+      cellStyle:
+        fontSize: 13
+        color: "$text"
+        border: [null, null, {style: solid, width: 1, color: "#D0D7E4"}, null]
+        align: [center, middle]
+      firstRowStyle:
+        fill: {type: solid, color: "$primary"}
+        color: "#FFFFFF"
+        bold: true
+        fontSize: 13
+pages:
+  - pages/01_cover.page
+  - pages/02_project.page
+  - pages/03_target.page
+  - pages/04_setup.page
+  - pages/05_assumptions.page
+  - pages/06_debug.page
+  - pages/07_baseline.page
+  - pages/08_modification.page
+  - pages/09_mod_results.page
+  - pages/10_reproducible.page
+  - pages/11_lessons.page
+  - pages/12_summary.page
