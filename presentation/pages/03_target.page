@@ -1,0 +1,55 @@
+pageType: content
+background: {type: solid, color: "#FFFFFF"}
+elements:
+  - elementId: title
+    elementType: text
+    bounds: [50, 28, 860, 40]
+    content: {style: "$pageTitle", text: "Reproduction target and scope"}
+  - elementId: rule
+    elementType: shape
+    bounds: [50, 74, 860, 2]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: target
+    elementType: shape
+    bounds: [50, 96, 860, 92]
+    shapeName: roundRect
+    adjustments: [8000]
+    fill: {type: solid, color: "$light"}
+  - elementId: targettext
+    elementType: text
+    bounds: [70, 106, 820, 74]
+    content:
+      style: "$body"
+      text: |
+        <p><strong>Target claim:</strong> MCTS with built-in ConcatPolicy + ConcatTransition + GenerativePRM ("ReST-MCTS*") on MATH500, n_iters=10, n_actions=3 (paper Table 6 row 1: 37%).</p>
+        <p><strong>Metrics:</strong> accuracy (repo's own evaluator), LLM invocations, input/output tokens, wall time — all from LiTS's built-in InferenceLogger.</p>
+  - elementId: scope
+    elementType: text
+    bounds: [50, 210, 420, 240]
+    content:
+      style: "$body"
+      text: |
+        <p><strong>Scoped down (per assignment):</strong></p>
+        <ul>
+        <li>One benchmark row, one dataset: MATH500</li>
+        <li>First <strong>20 examples</strong> of the registered loader (paper: 100)</li>
+        <li><strong>1 completed trial</strong> (3 planned; 2 cancelled for time budget) — sampling is stochastic (temperature-1 endpoint); per-example results reported instead of trial spread</li>
+        <li>Evaluation via <code>lits-eval</code> on saved terminal nodes — search is never re-run for scoring</li>
+        </ul>
+  - elementId: why
+    elementType: text
+    bounds: [500, 210, 410, 240]
+    content:
+      style: "$body"
+      text: |
+        <p><strong>Why this is a fair reproducibility target</strong></p>
+        <ul>
+        <li>Paper is explicit: results are demonstration-scale; subsets are the norm for expensive tree search</li>
+        <li>All components and the evaluation script are the authors' own — re-implementation is neither required nor desired</li>
+        <li>Every run writes <code>config.json</code>; any reported run can be re-executed flag-for-flag</li>
+        </ul>
+  - elementId: footer
+    elementType: text
+    bounds: [50, 500, 860, 20]
+    content: {style: "$small", text: "FTEC5660 Reproducibility Work · LiTS on MATH500 · 3 / 12"}

@@ -1,0 +1,35 @@
+pageType: content
+background: {type: solid, color: "#FFFFFF"}
+elements:
+  - elementId: title
+    elementType: text
+    bounds: [50, 28, 860, 40]
+    content: {style: "$pageTitle", text: "Hidden assumptions surfaced before running"}
+  - elementId: rule
+    elementType: shape
+    bounds: [50, 74, 860, 2]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: table
+    elementType: table
+    bounds: [50, 96, 860, 320]
+    columnWidths: [0.24, 0.40, 0.36]
+    rowHeights: [0.13, 0.2175, 0.2175, 0.2175, 0.2175]
+    style: "$default"
+    rows:
+      - [{text: "Assumption"}, {text: "What the repo/paper assumes"}, {text: "What I found / did"}]
+      - [{text: "Dataset version", align: [left, middle]}, {text: "“First 100 MATH500 examples”", align: [left, middle]}, {text: "Registered loader serves 316 rows — the “first 100” boundary is not addressable; I use the first 20 rows and document it", align: [left, middle]}]
+      - [{text: "Stochasticity", align: [left, middle]}, {text: "Configs saved per run, seeded sampling claimed", align: [left, middle]}, {text: "No user-facing seed for the OpenAI path; temperature-1 sampling ⇒ 3 trials planned per arm, 1 completed (time budget); per-example results reported instead of mean ± std", align: [left, middle]}]
+      - [{text: "Decoding params", align: [left, middle]}, {text: "temperature 0.7–0.8", align: [left, middle]}, {text: "Endpoint accepts only temperature 1.0 / top_p 0.95 — logged, identical across arms", align: [left, middle]}]
+      - [{text: "Reward path", align: [left, middle]}, {text: "GenerativePRM with logit fallback", align: [left, middle]}, {text: "Chat endpoint exposes no logprobs — fallback disabled by token-budget fixes (next slide); identical across arms", align: [left, middle]}]
+  - elementId: note
+    elementType: text
+    bounds: [50, 432, 860, 48]
+    content:
+      style: "$small"
+      text: |
+        <p>Takeaway: reproducibility of a “37%” number is bounded by these assumptions even before any model swap — a good illustration of why reproducibility reports emphasize conditions, not pass/fail.</p>
+  - elementId: footer
+    elementType: text
+    bounds: [50, 500, 860, 20]
+    content: {style: "$small", text: "FTEC5660 Reproducibility Work · LiTS on MATH500 · 5 / 12"}

@@ -1,0 +1,35 @@
+pageType: content
+background: {type: solid, color: "#FFFFFF"}
+elements:
+  - elementId: title
+    elementType: text
+    bounds: [50, 28, 860, 40]
+    content: {style: "$pageTitle", text: "Debug diary: four blockers between clone and first valid run"}
+  - elementId: rule
+    elementType: shape
+    bounds: [50, 74, 860, 2]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: table
+    elementType: table
+    bounds: [50, 96, 860, 330]
+    columnWidths: [0.06, 0.42, 0.52]
+    rowHeights: [0.10, 0.225, 0.225, 0.225, 0.225]
+    style: "$default"
+    rows:
+      - [{text: "#"}, {text: "Symptom"}, {text: "Root cause → fix (one patch commit, env-gated)"}]
+      - [{text: "1"}, {text: "400 invalid temperature: only 1 is allowed (then: only top_p 0.95)", align: [left, middle]}, {text: "Endpoint constrains sampling → env-gated override LITS_OPENAI_FORCE_TEMPERATURE / _TOP_P in openai_chat.py; deviation logged", align: [left, middle]}]
+      - [{text: "2"}, {text: "Could not extract answer … defaulting to 'no' — every binary score wrong", align: [left, middle]}, {text: "Reasoning model burns the hard-coded 10-token budget inside its reasoning channel → LITS_BINARY_MAX_NEW_TOKENS=512", align: [left, middle]}]
+      - [{text: "3"}, {text: "Logits unavailable … usefulness score 0.0 — reward signal collapses silently", align: [left, middle]}, {text: "Same cause at 500 tokens (PRM sampling) → LITS_PRM_SAMPLE_MAX_NEW_TOKENS=2048; without it MCTS degenerates to all-zero rewards", align: [left, middle]}]
+      - [{text: "4"}, {text: "Answer voting requires exactly one group_answers tool call — eval crashes", align: [left, middle]}, {text: "Reasoning endpoint replies in free text under tool_choice=auto → pin tool_choice=required in answer_voting.py (endpoint supports tools)", align: [left, middle]}]
+  - elementId: note
+    elementType: text
+    bounds: [50, 440, 860, 44]
+    content:
+      style: "$small"
+      text: |
+        <p>Verification: single-problem smoke test 1/1 correct; 2-problem timing run 2/2 correct at ~100 s/problem (~7.5k tokens/problem). All fixes are inert without the env vars and change no algorithm, prompt, or evaluation semantics.</p>
+  - elementId: footer
+    elementType: text
+    bounds: [50, 500, 860, 20]
+    content: {style: "$small", text: "FTEC5660 Reproducibility Work · LiTS on MATH500 · 6 / 12"}

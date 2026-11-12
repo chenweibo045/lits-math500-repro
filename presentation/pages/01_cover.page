@@ -1,0 +1,46 @@
+pageType: cover
+background:
+  type: solid
+  color: "#FFFFFF"
+elements:
+  - elementId: band
+    elementType: shape
+    bounds: [0, 0, 960, 8]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: kicker
+    elementType: text
+    bounds: [80, 130, 800, 30]
+    content:
+      fontSize: 15
+      color: "$muted"
+      letterSpacing: 2
+      text: AGENTIC AI FOR BUSINESS AND FINTECH · FTEC5660 · REPRODUCIBILITY WORK
+  - elementId: title
+    elementType: text
+    bounds: [80, 170, 800, 130]
+    content:
+      fontSize: 34
+      bold: true
+      color: "$primary"
+      lineHeight: 1.25
+      text: |
+        <p>Reproducing LiTS: LLM Tree Search on MATH500</p>
+        <p><span style="font-size:20px; color:$muted;">with an OpenAI-compatible reasoning model — and one controlled ablation</span></p>
+  - elementId: meta
+    elementType: text
+    bounds: [80, 330, 800, 110]
+    content:
+      fontSize: 14
+      color: "$text"
+      lineHeight: 1.6
+      text: |
+        <p><strong>Project:</strong> LiTS — A Modular Framework for LLM Tree Search (Li &amp; Tao, ACL 2026 Demo, arXiv:2603.00631)</p>
+        <p><strong>Code:</strong> github.com/xinzhel/lits-llm (Apache-2.0) · <strong>This work:</strong> github.com/chenweibo045/lits-math500-repro</p>
+        <p><strong>Student:</strong> ____________  ·  <strong>ID:</strong> ____________</p>
+  - elementId: date
+    elementType: text
+    bounds: [80, 470, 800, 24]
+    content:
+      style: "$small"
+      text: November 2026

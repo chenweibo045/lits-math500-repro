@@ -1,0 +1,44 @@
+pageType: content
+background: {type: solid, color: "#FFFFFF"}
+elements:
+  - elementId: title
+    elementType: text
+    bounds: [50, 28, 860, 40]
+    content: {style: "$pageTitle", text: "Setup and the controlled model swap"}
+  - elementId: rule
+    elementType: shape
+    bounds: [50, 74, 860, 2]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: setuptable
+    elementType: table
+    bounds: [50, 96, 860, 210]
+    columnWidths: [0.28, 0.72]
+    rowHeights: [0.16, 0.14, 0.14, 0.14, 0.14, 0.14, 0.14]
+    style: "$default"
+    rows:
+      - [{text: "Item"}, {text: "Value"}]
+      - [{text: "Hardware / OS"}, {text: "Apple M5 Pro, 24 GB RAM · macOS · Python 3.12", align: [left, middle]}]
+      - [{text: "LiTS"}, {text: "v0.4.0, clone of xinzhel/lits-llm @ f1791daa + 2 patch commits", align: [left, middle]}]
+      - [{text: "Model (swapped)"}, {text: "kimi-k2-0905-preview via OpenAI-compatible gateway (assignment permits “DeepSeek or another accessible model”)", align: [left, middle]}]
+      - [{text: "Sampling"}, {text: "temperature 1.0, top_p 0.95 — endpoint-mandated (paper: 0.7–0.8)", align: [left, middle]}]
+      - [{text: "Dataset"}, {text: "xinzhel/math500-float (HuggingFace), first 20 test rows", align: [left, middle]}]
+      - [{text: "Secrets"}, {text: "env vars only — no keys committed", align: [left, middle]}]
+  - elementId: warnbox
+    elementType: shape
+    bounds: [50, 330, 860, 110]
+    shapeName: roundRect
+    adjustments: [8000]
+    fill: {type: solid, color: "#FBF3E4"}
+    border: {style: solid, width: 1, color: "$warn"}
+  - elementId: warntext
+    elementType: text
+    bounds: [70, 342, 820, 88]
+    content:
+      style: "$body"
+      text: |
+        <p><strong>Controlled-variable statement.</strong> Results are <strong>not directly comparable</strong> to the paper: a different LLM (K2 reasoning model vs. Llama3-8B-Instruct) and endpoint-mandated sampling params. All arms are compared <em>against each other</em> under identical tasks, metrics, and evaluation scripts; paper numbers serve only as qualitative reference (expected pattern: tree search &gt; CoT).</p>
+  - elementId: footer
+    elementType: text
+    bounds: [50, 500, 860, 20]
+    content: {style: "$small", text: "FTEC5660 Reproducibility Work · LiTS on MATH500 · 4 / 12"}

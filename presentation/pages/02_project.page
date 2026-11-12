@@ -1,0 +1,57 @@
+pageType: content
+background: {type: solid, color: "#FFFFFF"}
+elements:
+  - elementId: title
+    elementType: text
+    bounds: [50, 28, 860, 40]
+    content: {style: "$pageTitle", text: "The project: LiTS — modular LLM tree search"}
+  - elementId: rule
+    elementType: shape
+    bounds: [50, 74, 860, 2]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: left
+    elementType: text
+    bounds: [50, 96, 430, 260]
+    content:
+      style: "$body"
+      text: |
+        <p><strong>What it is.</strong> A Python framework that decomposes LLM tree search into three reusable components:</p>
+        <ul>
+        <li><strong>Policy</strong> — generates candidate actions</li>
+        <li><strong>Transition</strong> — executes actions, builds states</li>
+        <li><strong>RewardModel</strong> — scores action quality</li>
+        </ul>
+        <p>Components plug into search algorithms (MCTS, BFS) and chain agents (ReAct) via a decorator registry — no core-code changes to add a domain.</p>
+        <p><strong>Paper type:</strong> system demonstration. Core claims are about <em>composability</em>, not SOTA accuracy.</p>
+  - elementId: righthead
+    elementType: text
+    bounds: [510, 96, 400, 26]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$primary"
+      text: Paper reference — MATH500, 100 ex., Llama3-8B
+  - elementId: reftable
+    elementType: table
+    bounds: [510, 130, 400, 170]
+    columnWidths: [0.55, 0.45]
+    rowHeights: [0.25, 0.25, 0.25, 0.25]
+    style: "$default"
+    rows:
+      - [{text: "Method"}, {text: "Accuracy"}]
+      - [{text: "ReST-MCTS* (built-in components)", align: [left, middle]}, {text: "37%"}]
+      - [{text: "ToT-BFS (same components)", align: [left, middle]}, {text: "39%"}]
+      - [{text: "CoT chain baseline", align: [left, middle]}, {text: "17%"}]
+  - elementId: claim
+    elementType: text
+    bounds: [510, 316, 400, 120]
+    content:
+      style: "$body"
+      text: |
+        <p><strong>Claim C1 (my target):</strong> ReST-MCTS* configuration reproduces, and tree search beats the CoT chain.</p>
+        <p><strong>Claim C2 (motivation):</strong> in open-ended action spaces, <em>policy diversity</em> — not reward quality — is the bottleneck (81.1% duplicate actions on Crosswords; search fails even with oracle rewards).</p>
+  - elementId: footer
+    elementType: text
+    bounds: [50, 500, 860, 20]
+    content: {style: "$small", text: "FTEC5660 Reproducibility Work · LiTS on MATH500 · 2 / 12"}
