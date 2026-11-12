@@ -12,6 +12,13 @@
 #                        - token budgets for reasoning-model backends
 set -euo pipefail
 
+# Hardened request defaults for OpenAI-compatible gateways: bound per-request
+# wait (seconds) and SDK retries; use the HF cache if the hub is unreachable.
+export LITS_OPENAI_TIMEOUT=${LITS_OPENAI_TIMEOUT:-900}
+export LITS_OPENAI_MAX_RETRIES=${LITS_OPENAI_MAX_RETRIES:-2}
+export HF_HUB_OFFLINE=${HF_HUB_OFFLINE:-1}
+export HF_DATASETS_OFFLINE=${HF_DATASETS_OFFLINE:-1}
+
 ARM=${1:?arm required: baseline|no_branch}
 TRIAL=${2:?trial number required}
 
