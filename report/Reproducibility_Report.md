@@ -1,6 +1,7 @@
 # Reproducibility Work — Reproducing LiTS (LLM Tree Search) on MATH500 with an OpenAI-Compatible Reasoning Model
 
 **Course:** Agentic AI for Business and FinTech (FTEC5660)
+**Student:** ____________  ·  **Student ID:** ____________
 **Project:** LiTS — *A Modular Framework for LLM Tree Search* (Li & Tao, ACL 2026 System Demonstrations; arXiv:2603.00631)
 **Code:** https://github.com/xinzhel/lits-llm (Apache-2.0) — instructor list, Tier A, No. 3
 **Reproduction repo (this work):** https://github.com/chenweibo045/lits-math500-repro
